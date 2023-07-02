@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BabaIsYou" default="jar" basedir=".">
+
+    <property name="Sources" value="src"/>
+    <property name="Classes" value="classes"/>
+    <property name="JavaDoc" value="docs/doc"/>
+    <property name="Lib" value="lib/zen5.jar"/>
+    <property name="target" value="15"/>
+    <property name="source" value="15"/>
+
+    <target name="compile" description="Compilation project" >
+        <condition property="java15">
+        <javaversion atleast="15"/>
+        </condition>
+        <javac classpath="lib/zen5.jar" includeantruntime="false" source="${source}" target="${target}" srcdir="${Sources}" destdir="${Classes}" fork="true">
+			<compilerarg line="--enable-preview"/>
+		</javac>
+        <echo message="Compilation completed." />
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="baba.jar" basedir="${Classes}">
+            <fileset dir="classes" />
+            <zipfileset includes="**/*.class" src="lib/zen5.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="fr.umlv.control.Controller" />
+                <attribute name="Class-Path" value="lib/zen5.jar" />
+            </manifest>
+        </jar>
+        <echo message="Compilation completed." />
+    </target>
+
+    <target name="javadoc" description="Create javadoc">
+        <javadoc classpath="lib/zen5.jar" sourcepath="${Sources}" destdir="${JavaDoc}" >
+            <fileset dir="${Sources}">
+                <include name="*/*.java" />
+            </fileset>
+        </javadoc>
+        <echo message="Javadoc is generate." />
+    </target>
+
+    <target name="clean">
+        <delete dir="${Classes}" />
+        <mkdir dir="${Classes}" />
+        <delete dir="${JavaDoc}" />
+        <mkdir dir="docs/doc" />
+        <delete file="baba.jar" />
+        <echo message="Project is clean" />
+    </target>
+
+</project>
